@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentEasy – Your Trusted Property Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0D080;
+    --gold-dark: #9A7530;
+    --dark: #0A0D14;
+    --dark2: #111520;
+    --dark3: #181D2A;
+    --card: #1A2035;
+    --text: #E8EAF0;
+    --muted: #8892A4;
+    --accent: #4A7FE8;
+    --green: #3DD68C;
+    --red: #FF5A5A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--dark2); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 60px;
+    background: rgba(10,13,20,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    transition: all 0.3s;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .logo span { -webkit-text-fill-color: var(--text); }
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500;
+    letter-spacing: 0.5px; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-btns { display: flex; gap: 12px; }
+  .btn-outline {
+    padding: 9px 22px; border-radius: 8px;
+    border: 1.5px solid var(--gold); color: var(--gold);
+    background: transparent; font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-outline:hover { background: var(--gold); color: var(--dark); }
+  .btn-solid {
+    padding: 9px 22px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--dark); border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-solid:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(201,168,76,0.35); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 60px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(201,168,76,0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 20% 80%, rgba(74,127,232,0.05) 0%, transparent 50%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at center, black 30%, transparent 80%);
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 650px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 50px;
+    background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+    font-size: 12px; font-weight: 600; color: var(--gold);
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 28px;
+  }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 900; line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  h1 em { font-style: normal; background: linear-gradient(135deg, var(--gold), var(--gold-light)); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-sub { font-size: 18px; color: var(--muted); line-height: 1.7; margin-bottom: 40px; max-width: 520px; }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 60px; }
+  .btn-lg {
+    padding: 14px 32px; border-radius: 10px; font-size: 16px;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.25s;
+  }
+  .btn-lg.gold { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--dark); border: none; }
+  .btn-lg.gold:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(201,168,76,0.4); }
+  .btn-lg.ghost { background: transparent; border: 1.5px solid rgba(255,255,255,0.2); color: var(--text); }
+  .btn-lg.ghost:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-stats { display: flex; gap: 48px; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--gold); }
+  .stat-lbl { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .hero-visual {
+    position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+    width: 42%; z-index: 1;
+  }
+  .hero-card {
+    background: var(--card);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 20px; padding: 28px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  .hc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .hc-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+  .hc-tag { padding: 4px 12px; border-radius: 50px; background: rgba(61,214,140,0.15); color: var(--green); font-size: 11px; font-weight: 600; }
+  .hc-city { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .hc-val { font-size: 28px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+  .hc-sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+  .hc-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+  .hc-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); animation: fillBar 2s ease-out forwards; }
+  @keyframes fillBar { from{width:0} }
+  .hc-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .hc-mini-item { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 12px; }
+  .hc-mi-lbl { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .hc-mi-val { font-size: 15px; font-weight: 600; }
+  .float-pill {
+    position: absolute; background: var(--card);
+    border: 1px solid rgba(201,168,76,0.2); border-radius: 12px;
+    padding: 10px 16px; font-size: 13px; font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    animation: float2 5s ease-in-out infinite;
+  }
+  @keyframes float2 { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-8px) rotate(0deg)} }
+  .pill1 { bottom: -30px; left: -60px; animation-delay: 1s; }
+  .pill2 { top: 20px; right: -60px; animation-delay: 2.5s; }
+  .pill-icon { margin-right: 6px; }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
+    padding: 12px 0; overflow: hidden; white-space: nowrap;
+  }
+  .ticker-inner { display: inline-flex; animation: ticker 30s linear infinite; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .ticker-item { color: var(--dark); font-size: 13px; font-weight: 600; padding: 0 40px; letter-spacing: 0.5px; }
+  .ticker-item::before { content: '◆'; margin-right: 16px; }
+
+  /* ── SECTIONS ── */
+  section { padding: 100px 60px; }
+  .section-tag {
+    display: inline-block; padding: 5px 14px; border-radius: 50px;
+    background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+    font-size: 11px; font-weight: 700; color: var(--gold);
+    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 52px); font-weight: 900;
+    line-height: 1.15; margin-bottom: 16px;
+  }
+  .section-sub { font-size: 17px; color: var(--muted); line-height: 1.7; max-width: 560px; }
+
+  /* ── CITIES ── */
+  #cities { background: var(--dark2); }
+  .cities-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-top: 56px; }
+  .city-card {
+    background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px; padding: 28px 20px; text-align: center;
+    transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden;
+  }
+  .city-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.06), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .city-card:hover { transform: translateY(-6px); border-color: rgba(201,168,76,0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+  .city-card:hover::before { opacity: 1; }
+  .city-icon { font-size: 32px; margin-bottom: 12px; }
+  .city-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .city-props { font-size: 12px; color: var(--gold); }
+
+  /* ── SERVICES ── */
+  #services { background: var(--dark3); }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+  .svc-card {
+    background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px; padding: 36px 32px; position: relative; overflow: hidden;
+    transition: all 0.35s;
+  }
+  .svc-card:hover { transform: translateY(-8px); border-color: rgba(201,168,76,0.35); box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
+  .svc-num {
+    position: absolute; top: 20px; right: 24px;
+    font-family: 'Playfair Display', serif; font-size: 60px; font-weight: 900;
+    color: rgba(201,168,76,0.06); line-height: 1;
+  }
+  .svc-icon { font-size: 36px; margin-bottom: 20px; }
+  .svc-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+  .svc-text { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .svc-tag {
+    display: inline-block; margin-top: 16px; padding: 4px 12px; border-radius: 50px;
+    background: rgba(201,168,76,0.08); font-size: 11px; font-weight: 600; color: var(--gold);
+  }
+
+  /* ── WHO WE SERVE ── */
+  #who { background: var(--dark2); }
+  .who-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 56px; }
+  .who-card {
+    border-radius: 24px; padding: 48px; position: relative; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .who-card.nri { background: linear-gradient(135deg, #101828 0%, #1A2540 100%); }
+  .who-card.senior { background: linear-gradient(135deg, #14120A 0%, #25200F 100%); }
+  .who-emoji { font-size: 56px; margin-bottom: 24px; display: block; }
+  .who-title { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; margin-bottom: 12px; }
+  .who-sub { color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+  .who-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .who-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+  .who-list li::before { content: '✓'; color: var(--green); font-weight: 700; min-width: 18px; }
+  .who-accent {
+    position: absolute; bottom: -30px; right: -30px; width: 140px; height: 140px;
+    border-radius: 50%; border: 1px solid rgba(201,168,76,0.1);
+  }
+  .who-accent::before {
+    content: ''; position: absolute; inset: 20px; border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.08);
+  }
+
+  /* ── QUOTES TICKER ── */
+  #quotes { background: var(--dark); padding: 80px 0; overflow: hidden; }
+  .quotes-inner { display: flex; gap: 32px; animation: slideQ 40s linear infinite; }
+  .quote-card {
+    flex: 0 0 380px; background: var(--card);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 20px; padding: 32px;
+  }
+  .quote-text {
+    font-family: 'Playfair Display', serif; font-size: 17px;
+    line-height: 1.65; margin-bottom: 20px; color: var(--text);
+  }
+  .quote-author { font-size: 13px; color: var(--gold); font-weight: 600; }
+  .quote-mark { font-size: 48px; color: rgba(201,168,76,0.2); font-family: 'Playfair Display', serif; line-height: 1; margin-bottom: 8px; }
+  @keyframes slideQ { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ── HOW IT WORKS ── */
+  #how { background: var(--dark3); }
+  .steps { display: flex; gap: 0; margin-top: 56px; position: relative; }
+  .steps::before {
+    content: ''; position: absolute; top: 32px; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold), transparent);
+    opacity: 0.2;
+  }
+  .step { flex: 1; text-align: center; padding: 0 24px; }
+  .step-num {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--card); border: 2px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--gold);
+    position: relative; z-index: 1; transition: all 0.3s;
+  }
+  .step:hover .step-num { background: var(--gold); color: var(--dark); transform: scale(1.1); }
+  .step-title { font-weight: 600; font-size: 16px; margin-bottom: 8px; }
+  .step-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── TRUST ── */
+  #trust { background: var(--dark2); }
+  .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 56px; }
+  .trust-item {
+    background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px; padding: 28px; text-align: center; transition: all 0.3s;
+  }
+  .trust-item:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-4px); }
+  .trust-icon { font-size: 32px; margin-bottom: 12px; }
+  .trust-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+  .trust-text { font-size: 13px; color: var(--muted); }
+
+  /* ── ANNOUNCEMENT BANNER ── */
+  .announce {
+    background: linear-gradient(135deg, #1A2035, #0A0D14);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 24px; padding: 56px; text-align: center;
+    margin: 0 60px 80px; position: relative; overflow: hidden;
+  }
+  .announce::before {
+    content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.08), transparent 70%);
+  }
+  .announce-tag {
+    display: inline-block; padding: 6px 18px; border-radius: 50px;
+    background: rgba(61,214,140,0.1); border: 1px solid rgba(61,214,140,0.3);
+    font-size: 12px; font-weight: 700; color: var(--green);
+    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 24px;
+  }
+  .announce-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 44px);
+    font-weight: 900; margin-bottom: 16px; position: relative;
+  }
+  .announce-sub { color: var(--muted); font-size: 16px; max-width: 560px; margin: 0 auto 32px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark2); border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 60px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+  }
+  .footer-brand .logo { display: block; margin-bottom: 12px; }
+  .footer-desc { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 260px; }
+  .footer-h { font-weight: 700; font-size: 13px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text); margin-bottom: 16px; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom {
+    background: var(--dark); padding: 20px 60px; text-align: center;
+    font-size: 12px; color: var(--muted); border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  /* ── MODAL OVERLAY ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--dark2); border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 24px; width: 100%; max-width: 480px;
+    padding: 48px; position: relative;
+    box-shadow: 0 60px 100px rgba(0,0,0,0.6);
+    animation: modalIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes modalIn { from{opacity:0;transform:scale(0.85) translateY(20px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  .modal-close {
+    position: absolute; top: 20px; right: 24px;
+    background: none; border: none; color: var(--muted);
+    font-size: 22px; cursor: pointer; transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--text); }
+  .modal-logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--gold-light)); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .modal-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+  .tabs { display: flex; gap: 4px; background: var(--card); border-radius: 10px; padding: 4px; margin-bottom: 28px; }
+  .tab {
+    flex: 1; padding: 9px; border-radius: 8px; border: none;
+    background: transparent; color: var(--muted);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .tab.active { background: var(--gold); color: var(--dark); font-weight: 600; }
+  .form-group { margin-bottom: 18px; }
+  .form-label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 7px; color: var(--text); }
+  .form-input {
+    width: 100%; padding: 12px 16px; background: var(--card);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 10px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 15px;
+    transition: border-color 0.2s; outline: none;
+  }
+  .form-input:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: var(--muted); font-size: 14px; }
+  .form-submit {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    border: none; border-radius: 10px;
+    color: var(--dark); font-family: 'DM Sans', sans-serif;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+    transition: all 0.25s; margin-top: 8px;
+  }
+  .form-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(201,168,76,0.4); }
+  .form-footer { text-align: center; font-size: 13px; color: var(--muted); margin-top: 20px; }
+  .form-footer a { color: var(--gold); text-decoration: none; }
+  .role-select { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .role-btn {
+    padding: 12px; border-radius: 10px;
+    background: var(--card); border: 1.5px solid rgba(255,255,255,0.08);
+    color: var(--muted); font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; text-align: center;
+  }
+  .role-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+  .alert {
+    padding: 12px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+    margin-bottom: 16px; display: none;
+  }
+  .alert.success { background: rgba(61,214,140,0.1); border: 1px solid rgba(61,214,140,0.3); color: var(--green); }
+  .alert.error { background: rgba(255,90,90,0.1); border: 1px solid rgba(255,90,90,0.3); color: var(--red); }
+
+  /* ── DASHBOARD ── */
+  #dashboard {
+    display: none; min-height: 100vh;
+    padding: 120px 60px 80px; background: var(--dark);
+  }
+  .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+  .dash-welcome { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; }
+  .dash-role { padding: 5px 14px; border-radius: 50px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .dash-role.admin { background: rgba(74,127,232,0.15); color: var(--accent); border: 1px solid rgba(74,127,232,0.3); }
+  .dash-role.customer { background: rgba(201,168,76,0.1); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .dash-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px; }
+  .dash-card {
+    background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px; padding: 24px; transition: all 0.3s;
+  }
+  .dash-card:hover { border-color: rgba(201,168,76,0.25); transform: translateY(-3px); }
+  .dc-label { font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .dc-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+  .dc-change { font-size: 12px; }
+  .up { color: var(--green); }
+  .down { color: var(--red); }
+  .dash-row { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+  .dash-panel {
+    background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px; padding: 28px;
+  }
+  .panel-title { font-weight: 600; font-size: 16px; margin-bottom: 20px; color: var(--text); }
+  .prop-list { display: flex; flex-direction: column; gap: 14px; }
+  .prop-item { display: flex; align-items: center; gap: 14px; padding: 14px; background: rgba(255,255,255,0.03); border-radius: 10px; transition: background 0.2s; }
+  .prop-item:hover { background: rgba(201,168,76,0.05); }
+  .prop-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(201,168,76,0.1); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .prop-info { flex: 1; }
+  .prop-name { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+  .prop-city { font-size: 12px; color: var(--muted); }
+  .prop-badge { padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: rgba(61,214,140,0.15); color: var(--green); }
+  .badge-yellow { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .badge-red { background: rgba(255,90,90,0.15); color: var(--red); }
+  .notif-list { display: flex; flex-direction: column; gap: 12px; }
+  .notif-item { padding: 12px; background: rgba(255,255,255,0.03); border-radius: 10px; border-left: 3px solid; }
+  .notif-item.gold { border-color: var(--gold); }
+  .notif-item.green { border-color: var(--green); }
+  .notif-item.blue { border-color: var(--accent); }
+  .notif-title { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+  .notif-time { font-size: 11px; color: var(--muted); }
+  .dash-logout {
+    padding: 9px 22px; border-radius: 8px; background: rgba(255,90,90,0.1);
+    border: 1.5px solid rgba(255,90,90,0.3); color: var(--red);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .dash-logout:hover { background: rgba(255,90,90,0.2); }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    #hero { padding: 100px 24px 60px; }
+    .hero-visual { display: none; }
+    section { padding: 70px 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .who-grid { grid-template-columns: 1fr; }
+    .steps { flex-direction: column; align-items: center; }
+    .steps::before { display: none; }
+    .trust-grid { grid-template-columns: 1fr 1fr; }
+    footer { grid-template-columns: 1fr; padding: 40px 24px; }
+    .announce { margin: 0 24px 60px; padding: 36px 24px; }
+    .dash-cards { grid-template-columns: 1fr 1fr; }
+    .dash-row { grid-template-columns: 1fr; }
+    #dashboard { padding: 100px 24px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Rent<span>Easy</span></div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#cities">Cities</a>
+    <a href="#who">Who We Serve</a>
+    <a href="#how">How It Works</a>
+    <a href="#trust">Why Us</a>
+  </div>
+  <div class="nav-btns">
+    <button class="btn-outline" onclick="openModal('login')">Login</button>
+    <button class="btn-solid" onclick="openModal('register')">Get Started</button>
+  </div>
+</nav>
+
+<!-- MAIN SITE -->
+<div id="mainSite">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🚀 Now Live Across India's Top Cities</div>
+    <h1>Your Property.<br><em>Our Responsibility.</em></h1>
+    <p class="hero-sub">RentEasy handles everything — from rent collection and tenant management to property maintenance — so you earn more, worry less.</p>
+    <div class="hero-ctas">
+      <button class="btn-lg gold" onclick="openModal('register')">Start Managing My Property</button>
+      <button class="btn-lg ghost" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Explore Services</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">8+</div><div class="stat-lbl">Metro Cities</div></div>
+      <div><div class="stat-num">2K+</div><div class="stat-lbl">Properties Managed</div></div>
+      <div><div class="stat-num">99%</div><div class="stat-lbl">On-Time Rent</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="hc-header">
+          <div class="hc-title">Property Dashboard</div>
+          <div class="hc-tag">● Active</div>
+        </div>
+        <div class="hc-city">📍 Mumbai, Bandra West</div>
+        <div class="hc-val">₹52,000 / mo</div>
+        <div class="hc-sub">Rental Income – On Time ✓</div>
+        <div class="hc-bar"><div class="hc-fill" style="width:88%"></div></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Rental Yield: <span style="color:var(--gold)">88%</span></div>
+        <div class="hc-mini">
+          <div class="hc-mini-item"><div class="hc-mi-lbl">Occupancy</div><div class="hc-mi-val" style="color:var(--green)">Occupied</div></div>
+          <div class="hc-mini-item"><div class="hc-mi-lbl">Maintenance</div><div class="hc-mi-val" style="color:var(--gold)">Up to date</div></div>
+          <div class="hc-mini-item"><div class="hc-mi-lbl">Property Type</div><div class="hc-mi-val">Residential</div></div>
+          <div class="hc-mini-item"><div class="hc-mi-lbl">Agent Assigned</div><div class="hc-mi-val" style="color:var(--accent)">Rahul S.</div></div>
+        </div>
+      </div>
+      <div class="float-pill pill1"><span class="pill-icon">✅</span>Rent Collected</div>
+      <div class="float-pill pill2"><span class="pill-icon">📈</span>+12% Rental Value</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span class="ticker-item">Mumbai</span>
+    <span class="ticker-item">Delhi NCR</span>
+    <span class="ticker-item">Bengaluru</span>
+    <span class="ticker-item">Hyderabad</span>
+    <span class="ticker-item">Chennai</span>
+    <span class="ticker-item">Pune</span>
+    <span class="ticker-item">Kolkata</span>
+    <span class="ticker-item">Ahmedabad</span>
+    <span class="ticker-item">Zero Late Payments</span>
+    <span class="ticker-item">Property Maintenance Handled</span>
+    <span class="ticker-item">NRI Friendly Services</span>
+    <span class="ticker-item">Senior Citizen Support</span>
+    <span class="ticker-item">Mumbai</span>
+    <span class="ticker-item">Delhi NCR</span>
+    <span class="ticker-item">Bengaluru</span>
+    <span class="ticker-item">Hyderabad</span>
+    <span class="ticker-item">Chennai</span>
+    <span class="ticker-item">Pune</span>
+    <span class="ticker-item">Kolkata</span>
+    <span class="ticker-item">Ahmedabad</span>
+    <span class="ticker-item">Zero Late Payments</span>
+    <span class="ticker-item">Property Maintenance Handled</span>
+    <span class="ticker-item">NRI Friendly Services</span>
+    <span class="ticker-item">Senior Citizen Support</span>
+  </div>
+</div>
+
+<!-- CITIES -->
+<section id="cities">
+  <div class="section-tag">Our Coverage</div>
+  <h2 class="section-title">Operating in India's<br>Top Metro Cities</h2>
+  <p class="section-sub">We are present in all Tier-1 and major metropolitan cities across India with local agents and offices.</p>
+  <div class="cities-grid">
+    <div class="city-card"><div class="city-icon">🌆</div><div class="city-name">Mumbai</div><div class="city-props">340+ Properties</div></div>
+    <div class="city-card"><div class="city-icon">🏛️</div><div class="city-name">Delhi NCR</div><div class="city-props">290+ Properties</div></div>
+    <div class="city-card"><div class="city-icon">🌿</div><div class="city-name">Bengaluru</div><div class="city-props">380+ Properties</div></div>
+    <div class="city-card"><div class="city-icon">💎</div><div class="city-name">Hyderabad</div><div class="city-props">210+ Properties</div></div>
+    <div class="city-card"><div class="city-icon">🌊</div><div class="city-name">Chennai</div><div class="city-props">180+ Properties</div></div>
+    <div class="city-card"><div class="city-icon">🎭</div><div class="city-name">Pune</div><div class="city-props">240+ Properties</div></div>
+    <div class="city-card"><div class="city-icon">🎨</div><div class="city-name">Kolkata</div><div class="city-props">150+ Properties</div></div>
+    <div class="city-card"><div class="city-icon">🏗️</div><div class="city-name">Ahmedabad</div><div class="city-props">130+ Properties</div></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-tag">What We Do</div>
+  <h2 class="section-title">Complete Property<br>Management Services</h2>
+  <p class="section-sub">From the first call to final payment — we manage every aspect of your property so you don't have to.</p>
+  <div class="services-grid">
+    <div class="svc-card">
+      <div class="svc-num">01</div>
+      <div class="svc-icon">💰</div>
+      <div class="svc-title">Rent Collection & Recovery</div>
+      <div class="svc-text">We ensure timely rent collection every month. Late payments are followed up proactively with tele-calling and field agents, so you never experience a payment delay.</div>
+      <span class="svc-tag">Zero Delays</span>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">02</div>
+      <div class="svc-icon">🔧</div>
+      <div class="svc-title">Building Maintenance</div>
+      <div class="svc-text">Our maintenance team handles all repairs, upkeep, and property health checks. From plumbing to painting — your property stays in top condition year-round.</div>
+      <span class="svc-tag">Full Coverage</span>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">03</div>
+      <div class="svc-icon">📈</div>
+      <div class="svc-title">Rental Value Enhancement</div>
+      <div class="svc-text">We analyse market trends and help you maximize your rental yields. Our agents advise on improvements to boost your property's earning potential.</div>
+      <span class="svc-tag">Higher Returns</span>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">04</div>
+      <div class="svc-icon">🏢</div>
+      <div class="svc-title">Residential & Commercial</div>
+      <div class="svc-text">Whether it's apartments, villas, offices, or shops — we manage all types of properties. One team, complete end-to-end property management expertise.</div>
+      <span class="svc-tag">All Property Types</span>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">05</div>
+      <div class="svc-icon">👥</div>
+      <div class="svc-title">Occupancy Management</div>
+      <div class="svc-text">We maintain full tenant records, handle lease agreements, and ensure maximum occupancy through active telecalling and on-field servicing by our local agents.</div>
+      <span class="svc-tag">Max Occupancy</span>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">06</div>
+      <div class="svc-icon">📊</div>
+      <div class="svc-title">Transparent Reporting</div>
+      <div class="svc-text">Get detailed monthly statements, rent receipts, and real-time updates on your property. Full financial transparency so you always know exactly where your money is.</div>
+      <span class="svc-tag">Live Insights</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE SERVE -->
+<section id="who">
+  <div class="section-tag">Made For</div>
+  <h2 class="section-title">Who Benefits From<br>RentEasy?</h2>
+  <div class="who-grid">
+    <div class="who-card nri">
+      <span class="who-emoji">✈️</span>
+      <div class="who-title">NRIs (Non-Resident Indians)</div>
+      <div class="who-sub">Living abroad shouldn't mean losing control of your Indian property. RentEasy is your eyes and ears on the ground — managing, protecting, and growing your investment from thousands of miles away.</div>
+      <ul class="who-list">
+        <li>Remote property management with full accountability</li>
+        <li>Regular digital updates and rent transfers</li>
+        <li>Legal compliance and document management</li>
+        <li>Trusted local agents at every property</li>
+        <li>Zero hassle — just passive income</li>
+      </ul>
+      <div class="who-accent"></div>
+    </div>
+    <div class="who-card senior">
+      <span class="who-emoji">👴</span>
+      <div class="who-title">Senior Citizens</div>
+      <div class="who-sub">You've worked hard to build your property. Now let us handle the stress of chasing rents and managing tenants while you enjoy your retirement with peace of mind.</div>
+      <ul class="who-list">
+        <li>Dedicated personal agent for your property</li>
+        <li>Monthly rent deposited directly to your account</li>
+        <li>Maintenance and tenant issues handled for you</li>
+        <li>Simple dashboard to track everything</li>
+        <li>Priority support and home visits available</li>
+      </ul>
+      <div class="who-accent"></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTES CAROUSEL -->
+<section id="quotes" style="padding: 80px 0;">
+  <div style="text-align:center;margin-bottom:40px;padding:0 60px">
+    <div class="section-tag">🎉 Big News</div>
+    <h2 class="section-title">RentEasy is Here!</h2>
+  </div>
+  <div style="overflow:hidden">
+    <div class="quotes-inner" id="quoteScroll">
+      <div class="quote-card"><div class="quote-mark">"</div><div class="quote-text">Good news for all NRIs! RentEasy is launching to take the pain out of property management. Your Indian property, finally in safe hands — no matter where you live in the world.</div><div class="quote-author">— For Every NRI Property Owner</div></div>
+      <div class="quote-card"><div class="quote-mark">"</div><div class="quote-text">Dear Senior Citizens, the days of chasing tenants and worrying about late rents are over. RentEasy is here so you can focus on what matters — enjoying life, not managing property.</div><div class="quote-author">— For Every Retired Property Owner</div></div>
+      <div class="quote-card"><div class="quote-mark">"</div><div class="quote-text">We are thrilled to launch RentEasy — India's most transparent and reliable property management service. Your financial goals are now our mission, across every metro city.</div><div class="quote-author">— Team RentEasy</div></div>
+      <div class="quote-card"><div class="quote-mark">"</div><div class="quote-text">Exciting news! RentEasy is now live in 8+ cities. Whether you own an apartment, villa, or commercial space, we are your dedicated property partners — always on the ground, always reliable.</div><div class="quote-author">— RentEasy India Launch</div></div>
+      <div class="quote-card"><div class="quote-mark">"</div><div class="quote-text">To every property owner who has struggled with late rents and tenant problems — relief is finally here. RentEasy is your stress-free solution to smarter property management.</div><div class="quote-author">— A Promise to Our Customers</div></div>
+      <!-- Duplicate for infinite scroll -->
+      <div class="quote-card"><div class="quote-mark">"</div><div class="quote-text">Good news for all NRIs! RentEasy is launching to take the pain out of property management. Your Indian property, finally in safe hands — no matter where you live in the world.</div><div class="quote-author">— For Every NRI Property Owner</div></div>
+      <div class="quote-card"><div class="quote-mark">"</div><div class="quote-text">Dear Senior Citizens, the days of chasing tenants and worrying about late rents are over. RentEasy is here so you can focus on what matters — enjoying life, not managing property.</div><div class="quote-author">— For Every Retired Property Owner</div></div>
+      <div class="quote-card"><div class="quote-mark">"</div><div class="quote-text">We are thrilled to launch RentEasy — India's most transparent and reliable property management service. Your financial goals are now our mission, across every metro city.</div><div class="quote-author">— Team RentEasy</div></div>
+      <div class="quote-card"><div class="quote-mark">"</div><div class="quote-text">Exciting news! RentEasy is now live in 8+ cities. Whether you own an apartment, villa, or commercial space, we are your dedicated property partners — always on the ground, always reliable.</div><div class="quote-author">— RentEasy India Launch</div></div>
+      <div class="quote-card"><div class="quote-mark">"</div><div class="quote-text">To every property owner who has struggled with late rents and tenant problems — relief is finally here. RentEasy is your stress-free solution to smarter property management.</div><div class="quote-author">— A Promise to Our Customers</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-tag">Process</div>
+  <h2 class="section-title">How RentEasy Works</h2>
+  <p class="section-sub">Getting started is simple. We take care of everything — from onboarding to monthly rent deposits.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-title">Register Your Property</div><div class="step-text">Sign up and add your property details. Our team will verify and onboard it within 48 hours.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-title">We Assign an Agent</div><div class="step-text">A dedicated local agent is assigned to your property for hands-on management and tenant relations.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-title">Tenant & Lease Management</div><div class="step-text">We find verified tenants, handle agreements, and ensure smooth occupancy at all times.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-title">Rent Collection</div><div class="step-text">Monthly rent is collected on time every month. Late payments are followed up immediately.</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-title">You Receive Your Money</div><div class="step-text">Rent is deposited to your bank account with a full transparent report — zero surprises.</div></div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section id="trust">
+  <div class="section-tag">Why RentEasy</div>
+  <h2 class="section-title">Built on Trust &<br>Transparency</h2>
+  <div class="trust-grid">
+    <div class="trust-item"><div class="trust-icon">🔒</div><div class="trust-title">Secure & Verified</div><div class="trust-text">All tenants are background-verified before placement</div></div>
+    <div class="trust-item"><div class="trust-icon">📞</div><div class="trust-title">24/7 Support</div><div class="trust-text">Dedicated support team available round the clock</div></div>
+    <div class="trust-item"><div class="trust-icon">📋</div><div class="trust-title">Legal Compliance</div><div class="trust-text">All agreements and documentation are legally compliant</div></div>
+    <div class="trust-item"><div class="trust-icon">💳</div><div class="trust-title">Guaranteed Transfers</div><div class="trust-text">Rent transferred directly to your account every month</div></div>
+    <div class="trust-item"><div class="trust-icon">🏠</div><div class="trust-title">On-Field Agents</div><div class="trust-text">Local agents deployed for physical property oversight</div></div>
+    <div class="trust-item"><div class="trust-icon">📊</div><div class="trust-title">Monthly Reports</div><div class="trust-text">Detailed monthly statements with full breakdowns</div></div>
+    <div class="trust-item"><div class="trust-icon">⚡</div><div class="trust-title">Fast Onboarding</div><div class="trust-text">Property onboarded within 48 hours of registration</div></div>
+    <div class="trust-item"><div class="trust-icon">🎯</div><div class="trust-title">Zero Hidden Fees</div><div class="trust-text">Fully transparent pricing with no surprise charges</div></div>
+  </div>
+</section>
+
+<!-- ANNOUNCEMENT -->
+<div class="announce">
+  <div class="announce-tag">🚀 We are Live!</div>
+  <h2 class="announce-title">RentEasy is Officially Launched<br>Across India's Metro Cities!</h2>
+  <p class="announce-sub">The wait is over. Whether you're an NRI abroad, a senior citizen at home, or any property owner tired of the rental struggle — RentEasy is here to meet all your rental goals.</p>
+  <button class="btn-lg gold" onclick="openModal('register')">Join RentEasy Today — It's Free</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span class="logo">Rent<span style="-webkit-text-fill-color:var(--text);color:var(--text)">Easy</span></span>
+    <p class="footer-desc" style="margin-top:12px">India's most trusted property management platform for NRIs and senior citizens. Across all major metro cities.</p>
+  </div>
+  <div>
+    <div class="footer-h">Services</div>
+    <ul class="footer-links">
+      <li><a href="#">Rent Collection</a></li>
+      <li><a href="#">Property Maintenance</a></li>
+      <li><a href="#">Tenant Management</a></li>
+      <li><a href="#">Rental Boosting</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-h">Cities</div>
+    <ul class="footer-links">
+      <li><a href="#">Mumbai</a></li>
+      <li><a href="#">Delhi NCR</a></li>
+      <li><a href="#">Bengaluru</a></li>
+      <li><a href="#">Hyderabad</a></li>
+      <li><a href="#">+ More Cities</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-h">Company</div>
+    <ul class="footer-links">
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Careers</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms of Service</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">© 2024 RentEasy. All rights reserved. Making Property Management Easy, Everywhere.</div>
+
+</div><!-- end mainSite -->
+
+<!-- ── DASHBOARD ── -->
+<div id="dashboard">
+  <div class="dash-header">
+    <div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:4px">Welcome back,</div>
+      <div class="dash-welcome" id="dashName">User</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <span class="dash-role" id="dashRole">Customer</span>
+      <button class="dash-logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Customer Dashboard -->
+  <div id="customerDash">
+    <div class="dash-cards">
+      <div class="dash-card"><div class="dc-label">Total Properties</div><div class="dc-val">3</div><div class="dc-change up">↑ All Active</div></div>
+      <div class="dash-card"><div class="dc-label">Monthly Rental Income</div><div class="dc-val">₹1.24L</div><div class="dc-change up">↑ +8% this month</div></div>
+      <div class="dash-card"><div class="dc-label">Pending Payments</div><div class="dc-val">₹0</div><div class="dc-change up">✓ All Clear</div></div>
+      <div class="dash-card"><div class="dc-label">Maintenance Tickets</div><div class="dc-val">1</div><div class="dc-change" style="color:var(--gold)">⚙ In Progress</div></div>
+    </div>
+    <div class="dash-row">
+      <div class="dash-panel">
+        <div class="panel-title">My Properties</div>
+        <div class="prop-list">
+          <div class="prop-item"><div class="prop-icon">🏠</div><div class="prop-info"><div class="prop-name">3BHK Apartment – Bandra West</div><div class="prop-city">Mumbai • ₹52,000/mo</div></div><span class="prop-badge badge-green">Occupied</span></div>
+          <div class="prop-item"><div class="prop-icon">🏢</div><div class="prop-info"><div class="prop-name">Office Space – Koramangala</div><div class="prop-city">Bengaluru • ₹45,000/mo</div></div><span class="prop-badge badge-green">Occupied</span></div>
+          <div class="prop-item"><div class="prop-icon">🏡</div><div class="prop-info"><div class="prop-name">2BHK Flat – Jubilee Hills</div><div class="prop-city">Hyderabad • ₹27,000/mo</div></div><span class="prop-badge badge-yellow">Listing</span></div>
+        </div>
+      </div>
+      <div class="dash-panel">
+        <div class="panel-title">Recent Notifications</div>
+        <div class="notif-list">
+          <div class="notif-item gold"><div class="notif-title">💰 Rent Received – Bandra</div><div class="notif-time">₹52,000 deposited • 2 days ago</div></div>
+          <div class="notif-item green"><div class="notif-title">✅ Tenant Agreement Renewed</div><div class="notif-time">Koramangala Office • 5 days ago</div></div>
+          <div class="notif-item blue"><div class="notif-title">🔧 Maintenance Scheduled</div><div class="notif-time">Jubilee Hills • Tomorrow 10AM</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="adminDash" style="display:none">
+    <div class="dash-cards">
+      <div class="dash-card"><div class="dc-label">Total Properties</div><div class="dc-val">2,140</div><div class="dc-change up">↑ +42 this week</div></div>
+      <div class="dash-card"><div class="dc-label">Active Customers</div><div class="dc-val">867</div><div class="dc-change up">↑ +18 this month</div></div>
+      <div class="dash-card"><div class="dc-label">Agents Deployed</div><div class="dc-val">54</div><div class="dc-change" style="color:var(--accent)">8 cities</div></div>
+      <div class="dash-card"><div class="dc-label">Revenue This Month</div><div class="dc-val">₹4.2Cr</div><div class="dc-change up">↑ +11%</div></div>
+    </div>
+    <div class="dash-row">
+      <div class="dash-panel">
+        <div class="panel-title">All Properties Overview</div>
+        <div class="prop-list">
+          <div class="prop-item"><div class="prop-icon">🌆</div><div class="prop-info"><div class="prop-name">Mumbai Zone</div><div class="prop-city">340 properties • 318 occupied</div></div><span class="prop-badge badge-green">93% Occupancy</span></div>
+          <div class="prop-item"><div class="prop-icon">🌿</div><div class="prop-info"><div class="prop-name">Bengaluru Zone</div><div class="prop-city">380 properties • 364 occupied</div></div><span class="prop-badge badge-green">96% Occupancy</span></div>
+          <div class="prop-item"><div class="prop-icon">🏛️</div><div class="prop-info"><div class="prop-name">Delhi NCR Zone</div><div class="prop-city">290 properties • 248 occupied</div></div><span class="prop-badge badge-yellow">86% Occupancy</span></div>
+          <div class="prop-item"><div class="prop-icon">💎</div><div class="prop-info"><div class="prop-name">Hyderabad Zone</div><div class="prop-city">210 properties • 186 occupied</div></div><span class="prop-badge badge-green">89% Occupancy</span></div>
+        </div>
+      </div>
+      <div class="dash-panel">
+        <div class="panel-title">Admin Alerts</div>
+        <div class="notif-list">
+          <div class="notif-item red" style="border-color:var(--red)"><div class="notif-title">⚠️ 12 Late Rent Cases</div><div class="notif-time">Follow-up required • Today</div></div>
+          <div class="notif-item gold"><div class="notif-title">📋 5 New Registrations</div><div class="notif-time">Pending approval • Today</div></div>
+          <div class="notif-item green"><div class="notif-title">✅ Monthly Report Ready</div><div class="notif-time">February 2024 • Generated</div></div>
+          <div class="notif-item blue"><div class="notif-title">👷 3 Maintenance Jobs</div><div class="notif-time">Assigned to field agents</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── LOGIN MODAL ── -->
+<div class="modal-overlay" id="loginModal" onclick="handleOverlayClick(event,'loginModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    <div class="modal-logo">RentEasy</div>
+    <div class="modal-title">Welcome Back</div>
+    <div class="modal-sub">Sign in to manage your properties</div>
+    <div id="loginAlert" class="alert"></div>
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input class="form-input" id="loginEmail" type="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="loginPassword" type="password" placeholder="Enter your password">
+    </div>
+    <button class="form-submit" onclick="handleLogin()">Sign In</button>
+    <div class="form-footer">
+      Don't have an account? <a href="#" onclick="switchModal('loginModal','registerModal')">Register here</a>
+      <br><small style="color:var(--muted);margin-top:8px;display:block">Demo: admin@renteasy.in / admin123 &nbsp;|&nbsp; customer@renteasy.in / pass123</small>
+    </div>
+  </div>
+</div>
+
+<!-- ── REGISTER MODAL ── -->
+<div class="modal-overlay" id="registerModal" onclick="handleOverlayClick(event,'registerModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+    <div class="modal-logo">RentEasy</div>
+    <div class="modal-title">Create Account</div>
+    <div class="modal-sub">Join thousands of property owners across India</div>
+    <div id="registerAlert" class="alert"></div>
+    <div>
+      <div style="font-size:13px;font-weight:500;margin-bottom:8px">I am a:</div>
+      <div class="role-select">
+        <button class="role-btn selected" id="roleCustomer" onclick="selectRole('customer')">👤 Property Owner</button>
+        <button class="role-btn" id="roleAdmin" onclick="selectRole('admin')">🛡️ Admin / Agent</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Full Name</label>
+      <input class="form-input" id="regName" type="text" placeholder="Your full name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input class="form-input" id="regEmail" type="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Phone Number</label>
+      <input class="form-input" id="regPhone" type="tel" placeholder="+91 XXXXX XXXXX">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="regPassword" type="password" placeholder="Create a strong password">
+    </div>
+    <button class="form-submit" onclick="handleRegister()">Create My Account</button>
+    <div class="form-footer">Already have an account? <a href="#" onclick="switchModal('registerModal','loginModal')">Login here</a></div>
+  </div>
+</div>
+
+<script>
+  // ── STATE ──
+  let selectedRole = 'customer';
+  const demoAccounts = {
+    'admin@renteasy.in': { password: 'admin123', role: 'admin', name: 'Admin User' },
+    'customer@renteasy.in': { password: 'pass123', role: 'customer', name: 'Rajesh Sharma' }
+  };
+  let users = JSON.parse(localStorage.getItem('rentEasyUsers') || '{}');
+
+  // ── MODAL ──
+  function openModal(type) {
+    closeAllModals();
+    const id = type === 'login' ? 'loginModal' : 'registerModal';
+    document.getElementById(id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+    document.body.style.overflow = '';
+    clearAlerts();
+  }
+  function closeAllModals() {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    document.body.style.overflow = '';
+  }
+  function handleOverlayClick(e, id) {
+    if (e.target === document.getElementById(id)) closeModal(id);
+  }
+  function switchModal(from, to) {
+    closeModal(from);
+    setTimeout(() => document.getElementById(to).classList.add('active'), 200);
+  }
+  function selectRole(role) {
+    selectedRole = role;
+    document.getElementById('roleCustomer').classList.toggle('selected', role === 'customer');
+    document.getElementById('roleAdmin').classList.toggle('selected', role === 'admin');
+  }
+  function clearAlerts() {
+    document.querySelectorAll('.alert').forEach(a => { a.style.display = 'none'; a.textContent = ''; });
+  }
+  function showAlert(id, msg, type) {
+    const el = document.getElementById(id);
+    el.textContent = msg; el.className = 'alert ' + type; el.style.display = 'block';
+  }
+
+  // ── AUTH ──
+  function handleLogin() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass = document.getElementById('loginPassword').value;
+    if (!email || !pass) { showAlert('loginAlert', 'Please fill in all fields.', 'error'); return; }
+
+    let user = demoAccounts[email];
+    if (!user) user = users[email];
+    if (!user || user.password !== pass) { showAlert('loginAlert', 'Invalid email or password.', 'error'); return; }
+
+    closeModal('loginModal');
+    showDashboard(user);
+  }
+
+  function handleRegister() {
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const phone = document.getElementById('regPhone').value.trim();
+    const pass = document.getElementById('regPassword').value;
+    if (!name || !email || !phone || !pass) { showAlert('registerAlert', 'Please fill in all fields.', 'error'); return; }
+    if (pass.length < 6) { showAlert('registerAlert', 'Password must be at least 6 characters.', 'error'); return; }
+    if (demoAccounts[email] || users[email]) { showAlert('registerAlert', 'Email already registered.', 'error'); return; }
+
+    users[email] = { name, password: pass, role: selectedRole, phone };
+    localStorage.setItem('rentEasyUsers', JSON.stringify(users));
+    showAlert('registerAlert', '🎉 Account created successfully! Signing you in...', 'success');
+    setTimeout(() => { closeModal('registerModal'); showDashboard(users[email]); }, 1400);
+  }
+
+  function showDashboard(user) {
+    document.getElementById('mainSite').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('dashName').textContent = user.name;
+    const roleEl = document.getElementById('dashRole');
+    roleEl.textContent = user.role === 'admin' ? 'Admin' : 'Customer';
+    roleEl.className = 'dash-role ' + user.role;
+    document.getElementById('customerDash').style.display = user.role === 'admin' ? 'none' : 'block';
+    document.getElementById('adminDash').style.display = user.role === 'admin' ? 'block' : 'none';
+    window.scrollTo(0, 0);
+  }
+
+  function logout() {
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('mainSite').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  // ── KEYBOARD ──
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAllModals(); });
+
+  // ── NAV SCROLL ──
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    nav.style.padding = window.scrollY > 60 ? '12px 60px' : '18px 60px';
+  });
+</script>
+</body>
+</html>
